@@ -1,0 +1,20 @@
+ffmpeg
+
+conda create -n coqui-tts python=3.10 -y
+conda activate coqui-tts
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install TTS
+pip install srt
+
+pip install "transformers==4.37.2" --force-reinstall
+pip install "numpy==1.22.0" --force-reinstall
+pip install "scipy==1.11.4" "soundfile<0.13" --force-reinstall
+
+pip install sentencepiece
+
+
+
+ffmpeg -i examples/Tanzania-2.mp4 -vn -ac 1 -ar 16000 speech.wav
+
+ffmpeg -ss 00:00:00.000 -to 00:00:04.436 -i examples/Tanzania-2.mp4 -vn -acodec pcm_s16le -ar 44100 -ac 2 workspace/speech1.wav
+
