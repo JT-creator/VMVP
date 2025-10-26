@@ -57,7 +57,9 @@ def translate_all(text_list):
 subtitle_file = 'examples/Tanzania-caption.srt'
 video_file = 'examples/Tanzania-2.mp4'
 task_name = 'tanzania'
-candidate_time = None
+candidate_time = 5
+temp_output_video = f'workspace/{task_name}/temp_output_video.mp4'
+temp_output_audio = f'workspace/{task_name}/temp_output_audio.wav'
 
 def voice_cloning(video_clips, output_tts_dir, spaeker_embed_audio, candidate_time=1):
     tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", progress_bar=False, gpu=True)
@@ -219,17 +221,26 @@ subprocess.run([
         spaeker_embed_audio,
         "-y"
     ])
-audio_de_paths = voice_cloning(video_clips, tts_dir, spaeker_embed_audio)
+audio_de_paths = voice_cloning(video_clips, tts_dir, spaeker_embed_audio, candidate_time)
 # Replace audio paths in video_clips with audio_de_paths
 for idx in range(len(video_clips)):
     if video_clips[idx][2].strip() != '':
         video_clips[idx][3] = audio_de_paths[idx]
 
-print(video_clips)
+#print(video_clips)
 video_workspace_dir = f'workspace/{task_name}/video_clips'
 subprocess.run(['mkdir', '-p', video_workspace_dir])
-temp_output_video = f'workspace/{task_name}/temp_output_video.mp4'
 sync_video_audio(VIDEO_CLIPS=video_clips, 
                  output_video_path=temp_output_video, 
                  input_video_path=video_file, 
                  video_workspace_dir=video_workspace_dir)
+
+cmd = [
+    "ffmpeg",
+    "-i", temp_output_video,
+    "-q:a", "0",
+    "-map", "a",
+    temp_output_audio,
+    "-y"
+]
+subprocess.run(cmd)

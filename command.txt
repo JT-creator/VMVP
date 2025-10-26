@@ -1,16 +1,54 @@
-ffmpeg
+sudo apt-get update
+sudo apt-get install ffmpeg
 
+
+# TTS
 conda create -n coqui-tts python=3.10 -y
 conda activate coqui-tts
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 pip install TTS
 pip install srt
-
 pip install "transformers==4.37.2" --force-reinstall
 pip install "numpy==1.22.0" --force-reinstall
 pip install "scipy==1.11.4" "soundfile<0.13" --force-reinstall
-
 pip install sentencepiece
+
+
+# lip sync
+conda create -n wav2lip python=3.8 -y
+conda activate wav2lip
+pip install -r src/Wav2Lip/requirements.txt
+pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
+
+
+conda activate coqui-tts_
+python src/srt_reader.py
+conda deactivate
+
+conda activate wav2lip_
+python src/Wav2Lip/inference.py \
+  --checkpoint_path src/Wav2Lip/checkpoints/Wav2Lip-SD-GAN.pth \
+  --face /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_video.mp4 \
+  --audio /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_audio.wav \
+  --outfile resultV.mp4 \
+  --pads 0 30 0 0
+
+python src/Wav2Lip/inference.py \
+  --checkpoint_path src/Wav2Lip/checkpoints/Wav2Lip-SD-GAN.pt \
+  --face /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_video.mp4 \
+  --audio /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_audio.wav \
+  --outfile resultV.mp4 \
+  --pads 0 30 0 0
+conda deactivate
+
+
+ffmpeg -i "/home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_video.mp4" -q:a 0 -map a "/home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_audio.wav" -y
+
+
+wget "https://www.adrianbulat.com/downloads/python-fan/s3fd-619a316812.pth" -O face_detection/detection/sfd/s3fd.pth
+https://drive.google.com/file/d/15G3U08c8xsCkOqQxE38Z2XXDnPcOptNk/view?usp=share_link -> checkpoints/Wav2Lip-SD-GAN.pt
+
+python src/Wav2Lip/inference.py --checkpoint_path src/Wav2Lip/checkpoints/Wav2Lip-SD-GAN.pth --face /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_video.mp4 --audio /home/jordanz/projects/tts/VMVP/workspace/tanzania/temp_output_audio.wav --outfile resultV.mp4 --pads 0 30 0 0
 
 
 
