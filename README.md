@@ -15,8 +15,8 @@ This project builds a **Video Translation MVP** that automatically translate a v
 ### Example Output Files
 
 - Updated video: `example_outputs/Tanzania_updated_video.mp4`
-- New Audio: `example_outputs\Tanzania_translated_audio.wav`
-- Translated transcriptions: `example_outputs\translated_subtitles.srt`
+- New Audio: `example_outputs/Tanzania_translated_audio.wav`
+- Translated transcriptions: `example_outputs/translated_subtitles.srt`
 
 ## Pipeline Overview
 
@@ -108,6 +108,10 @@ RESULT_FOLDER="${5:-results/${TASK_NAME}}"
 Then run:
 ```bash
 bash run_pipeline.sh
+```
+Or you may run:
+```bash
+bash run_pipeline.sh <SUBTITLE_FILE> <VIDEO_FILE> <TASK_NAME>
 ```
 
 The resulting video will be saved at the path defined by RESULT_FOLDER.
