@@ -2,6 +2,7 @@ import srt
 import subprocess
 import argparse
 import os
+import datetime
 
 from utils import get_video_duration_str, get_audio_duration, srt_str_to_sec
 from translate_en2de import translate_all
@@ -118,7 +119,8 @@ if __name__ == "__main__":
     sync_video_audio(VIDEO_CLIPS=video_clips, 
                     output_video_path=temp_output_video, 
                     input_video_path=video_file, 
-                    video_workspace_dir=video_workspace_dir)
+                    video_workspace_dir=video_workspace_dir,
+                    output_srt_path=f'{workspace_dir}/translated_subtitles.srt')
 
     cmd = [
         "ffmpeg",

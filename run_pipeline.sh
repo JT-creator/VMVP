@@ -2,8 +2,8 @@
 set -euo pipefail
 
 # === Configurable environment names ===
-COQUI_ENV="coqui-tts_0"
-WAV2LIP_ENV="wav2lip_0"
+COQUI_ENV="coqui-tts"
+WAV2LIP_ENV="wav2lip"
 
 # === Paths (edit if needed) ===
 CHECKPOINT_PATH="src/Wav2Lip/checkpoints/Wav2Lip-SD-GAN.pt"
@@ -15,6 +15,8 @@ CANDIDATE_TIME="${4:-5}"
 RESULT_FOLDER="${5:-results/${TASK_NAME}}"
 
 WORKSPACE_DIR="workspace/${TASK_NAME}"
+TRANSLATED_SRT="${WORKSPACE_DIR}/translated_subtitles.srt"
+
 OUTFILE="${WORKSPACE_DIR}/final_output_video.mp4"
 TEMP_OUTPUT_VIDEO="${WORKSPACE_DIR}/stage1_output_video.mp4"
 TEMP_OUTPUT_AUDIO="${WORKSPACE_DIR}/output_audio.wav"
@@ -59,5 +61,6 @@ echo "Wav2Lip inference complete."
 mkdir -p "$RESULT_FOLDER"
 cp "$OUTFILE" "$RESULT_FOLDER/"
 cp "$TEMP_OUTPUT_AUDIO" "$RESULT_FOLDER/"
+cp "$TRANSLATED_SRT" "$RESULT_FOLDER/"
 
 echo "All done. Output video saved as: $RESULT_FOLDER"

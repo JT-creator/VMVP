@@ -5,8 +5,8 @@
 set -e  # Exit immediately if a command exits with a non-zero status
 
 # Configuration: environment names
-COQUI_ENV="coqui-tts_0"
-WAV2LIP_ENV="wav2lip_0"
+COQUI_ENV="coqui-tts"
+WAV2LIP_ENV="wav2lip"
 
 # System dependencies
 if ! command -v ffmpeg &> /dev/null

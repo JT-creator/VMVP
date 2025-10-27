@@ -1,8 +1,12 @@
 from utils import get_audio_duration, srt_str_to_sec
 import subprocess
+import datetime
+import srt
 
-def sync_video_audio(VIDEO_CLIPS, output_video_path, input_video_path, video_workspace_dir):
+def sync_video_audio(VIDEO_CLIPS, output_video_path, input_video_path, video_workspace_dir, output_srt_path):
     sync_video_list = []
+    translated_subtitles = []
+    current_time = 0.0  # track cumulative timeline in seconds
 
     for idx, clip in enumerate(VIDEO_CLIPS):
         start, end, text, audio_path = clip
@@ -48,6 +52,20 @@ def sync_video_audio(VIDEO_CLIPS, output_video_path, input_video_path, video_wor
 
         sync_video_list.append(clip_with_audio)
 
+        # === Record updated subtitle timing ===
+        if text.strip() != '':
+            start_time = current_time
+            end_time = current_time + tts_audio_duration
+            translated_subtitles.append(
+                srt.Subtitle(
+                    index=len(translated_subtitles) + 1,
+                    start=datetime.timedelta(seconds=start_time),
+                    end=datetime.timedelta(seconds=end_time),
+                    content=text
+                )
+            )
+        current_time += tts_audio_duration  # advance timeline
+
     # Concatenate all synced video clips
     concat_file = f"{video_workspace_dir}/concat_list.txt"
     with open(concat_file, "w") as f:
@@ -63,3 +81,7 @@ def sync_video_audio(VIDEO_CLIPS, output_video_path, input_video_path, video_wor
         "-c", "copy",
         output_video_path
     ], check=True)
+
+    # === Save new translated subtitles ===
+    with open(output_srt_path, "w", encoding="utf-8") as f:
+        f.write(srt.compose(translated_subtitles))

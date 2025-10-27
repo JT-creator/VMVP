@@ -1,8 +1,28 @@
 # Video Translation MVP (Coqui TTS + Wav2Lip)
 
-This project builds a **Video Translation MVP** that automatically generates synchronized lip movements and translated speech using:
+This project builds a **Video Translation MVP** that automatically translate a video from English to German and generates synchronized lip movements:
 - [Coqui TTS](https://github.com/coqui-ai/TTS) for text-to-speech generation  
 - [Wav2Lip](https://github.com/Rudrabha/Wav2Lip) for lip-syncing speech to video  
+
+---
+
+## Example Input and Output Files
+### Example Input Files
+
+- Original Video: `examples/Tanzania-2.mp4`
+- Original transcription `examples/Tanzania-caption.srt`
+
+### Example Output Files
+
+- Updated video: `example_outputs/Tanzania_updated_video.mp4`
+- New Audio: `example_outputs\Tanzania_translated_audio.wav`
+- Translated transcriptions: `example_outputs\translated_subtitles.srt`
+
+## Pipeline Overview
+
+<p align="center">
+  <img src="example_outputs/pipeline.jpeg" alt="Pipeline Overview" width="70%">
+</p>
 
 ---
 
@@ -29,7 +49,6 @@ Alternatively, you can follow the instructions in the script to manually perform
 - Creates two Conda environments:
   - `coqui-tts` → for speech synthesis
   - `wav2lip` → for video lip-sync
-- Installs all necessary Python dependencies
 
 ---
 
@@ -71,7 +90,7 @@ This script:
 
 ## Customize the Run
 
-You can pass arguments to `run_pipeline.sh` or edit the variables at lines 10–18 of the script. Defaults are provided if no arguments are given:
+You can pass arguments to `run_pipeline.sh` or edit the variables at lines 10–15 of the script. Defaults are provided if no arguments are given:
 
 ```bash
 SUBTITLE_FILE="${1:-examples/Tanzania-caption.srt}"
@@ -122,11 +141,6 @@ results/tanzania/output_audio.wav
 └── workspace/                  # Intermediate/final outputs
 └── temp/                       # Intermediate files
 ```
-
----
-
-## Pipeline Overview
-
 
 ---
 
