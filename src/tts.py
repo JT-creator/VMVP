@@ -10,6 +10,7 @@ def voice_cloning(VIDEO_CLIPS, output_tts_dir, spaeker_embed_audio, candidate_ti
     for idx, clip in enumerate(VIDEO_CLIPS):
         start, end, text, audio_path = clip
         if text.strip() == '':
+            audio_de_paths.append(audio_path)
             continue
         
         target_duration = get_audio_duration(audio_path)

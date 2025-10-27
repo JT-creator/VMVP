@@ -147,7 +147,8 @@ results/tanzania/output_audio.wav
 ## Assumptions and Limitations
 - The pipeline assumes a single face is present in the video for lip-syncing.
 - GPU with sufficient VRAM is required; otherwise, you must reduce `--resize_factor` for large videos.
-- Subtitle and video must be roughly aligned in timing.
+- In the input SRT file, each subtitle and blank segment is forced to have a minimum duration greater than 0.3 seconds.
+This constraint helps prevent unstable or abrupt transitions.
 - Models are trained on general datasets and may not perfectly match all speech styles or languages.
 
 ---
